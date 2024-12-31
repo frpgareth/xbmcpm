@@ -1669,6 +1669,9 @@ CDemuxStream* CDVDDemuxFFmpeg::AddStream(int streamIdx)
         if (av_dict_get(pStream->metadata, "title", NULL, 0))
           st->m_description = av_dict_get(pStream->metadata, "title", NULL, 0)->value;
 
+        if ((st->iBitRate == 0) && (auto tag = av_dict_get(pStream->metadata, "BPS", NULL, 0)))
+          st->iBitRate = std::stoi(tag->value);
+
         break;
       }
       case AVMEDIA_TYPE_VIDEO:
@@ -1934,6 +1937,10 @@ CDemuxStream* CDVDDemuxFFmpeg::AddStream(int streamIdx)
             st->stereo_mode = stereoMode.empty() ? "block_lr" : stereoMode;
           }
         }
+
+        if ((st->iBitRate == 0) && (auto tag = av_dict_get(pStream->metadata, "BPS", NULL, 0)))
+          st->iBitRate = std::stoi(tag->value);
+
         break;
       }
       case AVMEDIA_TYPE_DATA:
