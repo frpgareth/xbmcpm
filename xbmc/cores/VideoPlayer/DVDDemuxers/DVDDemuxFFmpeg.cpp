@@ -1666,8 +1666,8 @@ CDemuxStream* CDVDDemuxFFmpeg::AddStream(int streamIdx)
         if (st->iBitsPerSample == 0)
           st->iBitsPerSample = pStream->codecpar->bits_per_coded_sample;
 
-        if (av_dict_get(pStream->metadata, "title", NULL, 0))
-          st->m_description = av_dict_get(pStream->metadata, "title", NULL, 0)->value;
+        if (auto tag = av_dict_get(pStream->metadata, "title", NULL, 0))
+          st->m_description = tag->value;
 
         if ((st->iBitRate == 0) && (auto tag = av_dict_get(pStream->metadata, "BPS", NULL, 0)))
           st->iBitRate = std::stoi(tag->value);
@@ -1875,8 +1875,8 @@ CDemuxStream* CDVDDemuxFFmpeg::AddStream(int streamIdx)
             }
           }
         }
-        if (av_dict_get(pStream->metadata, "title", NULL, 0))
-          st->m_description = av_dict_get(pStream->metadata, "title", NULL, 0)->value;
+        if (auto tag = av_dict_get(pStream->metadata, "title", NULL, 0))
+          st->m_description = tag->value;
 
         if (pStream->codecpar->codec_id == AV_CODEC_ID_H264 && aml_display_support_3d())
         {
@@ -1963,8 +1963,8 @@ CDemuxStream* CDVDDemuxFFmpeg::AddStream(int streamIdx)
           CDemuxStreamSubtitleFFmpeg* st = new CDemuxStreamSubtitleFFmpeg(pStream);
           stream = st;
 
-          if (av_dict_get(pStream->metadata, "title", NULL, 0))
-            st->m_description = av_dict_get(pStream->metadata, "title", NULL, 0)->value;
+          if (auto tag = av_dict_get(pStream->metadata, "title", NULL, 0))
+            st->m_description = tag->value;
 
           AVDictionaryEntry *tag = av_dict_get(pStream->metadata, "3d-plane", NULL, AV_DICT_IGNORE_SUFFIX);
           if (tag && tag->value && *tag->value) {
